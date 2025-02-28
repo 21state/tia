@@ -66,6 +66,25 @@ func (c *Client) GetStatus(ctx context.Context) (ResultStatus, error) {
 	return response.Result, nil
 }
 
+// GetTx retrieves transaction information by hash
+// Used by the 'tx' command to fetch transaction details
+func (c *Client) GetTx(ctx context.Context, hash []byte) (ResultTx, error) {
+	args := map[string]string{
+		"hash": fmt.Sprintf("0x%X", hash),
+	}
+
+	var response Response[ResultTx]
+	if err := c.get(ctx, "tx", args, &response); err != nil {
+		return ResultTx{}, err
+	}
+
+	if response.Error != nil {
+		return ResultTx{}, response.Error
+	}
+
+	return response.Result, nil
+}
+
 // get performs a GET request to the RPC endpoint
 func (c *Client) get(ctx context.Context, path string, args map[string]string, output interface{}) error {
 	u, err := url.Parse(c.baseURL)

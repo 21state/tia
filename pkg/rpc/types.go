@@ -137,3 +137,39 @@ type ValidatorInfo struct {
 	} `json:"pub_key"`
 	VotingPower string `json:"voting_power"`
 }
+
+// The following types are used by the 'tx' command to retrieve and display transaction information
+
+// ResultTx represents the result of a transaction query
+type ResultTx struct {
+	Hash     string        `json:"hash"`
+	Height   int64         `json:"height,string"`
+	Index    int           `json:"index"`
+	Tx       []byte        `json:"tx"`
+	TxResult TxResult      `json:"tx_result"`
+}
+
+// TxResult represents the result of a transaction
+type TxResult struct {
+	Code      int           `json:"code"`
+	Data      string        `json:"data"`
+	Log       string        `json:"log"`
+	Info      string        `json:"info"`
+	GasWanted int64         `json:"gas_wanted,string"`
+	GasUsed   int64         `json:"gas_used,string"`
+	Events    []TxEvent     `json:"events"`
+	Codespace string        `json:"codespace"`
+}
+
+// TxEvent represents an event in a transaction
+type TxEvent struct {
+	Type       string           `json:"type"`
+	Attributes []EventAttribute `json:"attributes"`
+}
+
+// EventAttribute represents an attribute in an event
+type EventAttribute struct {
+	Key   []byte `json:"key"`
+	Value []byte `json:"value"`
+	Index bool   `json:"index"`
+}
