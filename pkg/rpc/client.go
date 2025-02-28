@@ -52,6 +52,20 @@ func (c *Client) GetBlock(ctx context.Context, height int64) (ResultBlock, error
 	return response.Result, nil
 }
 
+// GetStatus retrieves the current status of the node
+func (c *Client) GetStatus(ctx context.Context) (ResultStatus, error) {
+	var response Response[ResultStatus]
+	if err := c.get(ctx, "status", nil, &response); err != nil {
+		return ResultStatus{}, err
+	}
+
+	if response.Error != nil {
+		return ResultStatus{}, response.Error
+	}
+
+	return response.Result, nil
+}
+
 // get performs a GET request to the RPC endpoint
 func (c *Client) get(ctx context.Context, path string, args map[string]string, output interface{}) error {
 	u, err := url.Parse(c.baseURL)
