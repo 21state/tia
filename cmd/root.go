@@ -13,9 +13,17 @@ var rootCmd = &cobra.Command{
 	Short: "A CLI explorer for Celestia blockchain",
 	Long: `tia is a command-line interface for exploring the Celestia blockchain.
 It allows you to retrieve information about blocks, transactions, and more.`,
+	CompletionOptions: cobra.CompletionOptions{
+		DisableDefaultCmd: true,
+	},
 }
 
 func Execute() error {
+	rootCmd.SetHelpCommand(&cobra.Command{
+		Use:    "no-help",
+		Hidden: true,
+	})
+	
 	return rootCmd.Execute()
 }
 
